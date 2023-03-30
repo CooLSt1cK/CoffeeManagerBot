@@ -61,6 +61,10 @@
     {
       "name": "without_coffeine",
       "cost": 7
+    },
+    {
+      "name": "honey",
+      "cost": 8
     }
   ],
   "sweets": [
