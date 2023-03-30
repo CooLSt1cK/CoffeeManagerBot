@@ -9,7 +9,7 @@ from src.utils import item_to_str, count_cost, split_in_two_columns, order_to_st
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.DEBUG
+    level=logging.INFO
 )
 
 
