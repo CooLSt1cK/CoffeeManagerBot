@@ -9,7 +9,7 @@ from src.utils import item_to_str, split_in_two_columns, count_cost, order_to_st
 
 def create_logic_keyboard():
     return [InlineKeyboardButton(emojize(':pencil:'), callback_data='edit'),
-            InlineKeyboardButton(emojize(':cross_mark:'), callback_data='cancel')]
+            InlineKeyboardButton(emojize(':next_track_button:'), callback_data='cancel')]
 
 
 def create_approve_keyboard():
@@ -142,7 +142,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.user_data[f'current_order_{message_id}'].append(selected_coffee)
             context.user_data[f'order_status_{message_id}'] = 'additives'
             await query.edit_message_text(
-                text=f'Selected coffee {selected_coffee["name"]} has the next price: {selected_coffee["size"]["cost"]}',
+                text=f'Обрана кава {selected_coffee["name"]} коштує: {selected_coffee["size"]["cost"]}',
                 reply_markup=InlineKeyboardMarkup(additives_keyboard))
         else:
             context.user_data[f'order_status_{message_id}'] = 'size'
@@ -150,7 +150,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                     in
                                     enumerate(context.bot_data['bar']['coffee'][callback_data]['sizes'])]
             await query.edit_message_text(
-                text=f'Please select coffee size for coffee {context.bot_data["bar"]["coffee"][callback_data]["name"]}',
+                text=f'Будьласка оберіть розмір кави {context.bot_data["bar"]["coffee"][callback_data]["name"]}',
                 reply_markup=InlineKeyboardMarkup([coffee_size_keyboard]))
         return
     elif context.user_data[f'order_status_{message_id}'] == 'size':
@@ -160,7 +160,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data[f'current_order_{message_id}'].append(selected_coffee)
         context.user_data[f'order_status_{message_id}'] = 'additives'
         await query.edit_message_text(
-            text=f'Selected coffee {selected_coffee["name"]}/{selected_coffee["size"]["name"]} has the next price: {selected_coffee["size"]["cost"]}',
+            text=f'Обрана кава {selected_coffee["name"]}/{selected_coffee["size"]["name"]} коштує: {selected_coffee["size"]["cost"]}',
             reply_markup=InlineKeyboardMarkup(additives_keyboard))
         return
     elif context.user_data[f'order_status_{message_id}'] == 'additives':
@@ -168,7 +168,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data[f'current_order_{message_id}'].append(selected_additive)
         context.user_data[f'order_status_{message_id}'] = 'additives'
         await query.edit_message_text(
-            text=f'Selected additives {selected_additive["name"]} has the next price: {selected_additive["cost"]}',
+            text=f'Обрані додатки {selected_additive["name"]} коштують: {selected_additive["cost"]}',
             reply_markup=InlineKeyboardMarkup(additives_keyboard))
         return
     elif context.user_data[f'order_status_{message_id}'] == 'sweets':
@@ -176,6 +176,6 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context.user_data[f'current_order_{message_id}'].append(selected_sweet)
         context.user_data[f'order_status_{message_id}'] = 'sweets'
         await query.edit_message_text(
-            text=f'Selected additives {selected_sweet["name"]} has the next price: {selected_sweet["cost"]}',
+            text=f'Обрані солодощі {selected_sweet["name"]} коштують: {selected_sweet["cost"]}',
             reply_markup=InlineKeyboardMarkup(sweets_keyboard))
         return
