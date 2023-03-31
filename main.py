@@ -10,7 +10,8 @@ from src.routs_for_ordering import *
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
+    level=logging.DEBUG,
+    filename='logs.txt'
 )
 
 

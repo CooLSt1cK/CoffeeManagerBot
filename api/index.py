@@ -24,3 +24,9 @@ def start():
 def status():
     global bot_thread
     return str(bot_thread.is_alive())
+
+
+@app.route('/read_logs')
+def read_logs():
+    with open('logs.txt', 'r') as f:
+        return str(f.read()).replace('\n', '<br>')
