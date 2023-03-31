@@ -1,16 +1,10 @@
 import datetime
-import logging
 
 from emoji import emojize, demojize
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton, ReplyKeyboardMarkup
 from telegram.ext import CallbackContext
 
 from src.utils import item_to_str, count_cost, split_in_two_columns, order_to_str
-
-logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO
-)
 
 
 async def start(update: Update, context: CallbackContext):
@@ -60,19 +54,24 @@ async def shift_started(update: Update, context: CallbackContext):
                                               filter(lambda order: order['order_type'] == 'credit_card',
                                                      context.user_data['shift']['orders'])))
         order_list_total = sum(list(map(lambda order: order['order_list'], context.user_data['shift']['orders'])), [])
-        total_caps_xs = list(filter(lambda cap: cap['name'] == 'XS', context.user_data['shift']['caps']))[0]['count'] - sum(
+        total_caps_xs = list(filter(lambda cap: cap['name'] == 'XS', context.user_data['shift']['caps']))[0][
+                            'count'] - sum(
             map(lambda order: 1,
                 filter(lambda order: 'size' in order and order['size']['name'] == 'XS', order_list_total)))
-        total_caps_s = list(filter(lambda cap: cap['name'] == 'S', context.user_data['shift']['caps']))[0]['count'] - sum(
+        total_caps_s = list(filter(lambda cap: cap['name'] == 'S', context.user_data['shift']['caps']))[0][
+                           'count'] - sum(
             map(lambda order: 1,
                 filter(lambda order: 'size' in order and order['size']['name'] == 'S', order_list_total)))
-        total_caps_m = list(filter(lambda cap: cap['name'] == 'M', context.user_data['shift']['caps']))[0]['count'] - sum(
+        total_caps_m = list(filter(lambda cap: cap['name'] == 'M', context.user_data['shift']['caps']))[0][
+                           'count'] - sum(
             map(lambda order: 1,
                 filter(lambda order: 'size' in order and order['size']['name'] == 'M', order_list_total)))
-        total_caps_l = list(filter(lambda cap: cap['name'] == 'L', context.user_data['shift']['caps']))[0]['count'] - sum(
+        total_caps_l = list(filter(lambda cap: cap['name'] == 'L', context.user_data['shift']['caps']))[0][
+                           'count'] - sum(
             map(lambda order: 1,
                 filter(lambda order: 'size' in order and order['size']['name'] == 'l', order_list_total)))
-        total_caps_xl = list(filter(lambda cap: cap['name'] == 'XL', context.user_data['shift']['caps']))[0]['count'] - sum(
+        total_caps_xl = list(filter(lambda cap: cap['name'] == 'XL', context.user_data['shift']['caps']))[0][
+                            'count'] - sum(
             map(lambda order: 1,
                 filter(lambda order: 'size' in order and order['size']['name'] == 'XL', order_list_total)))
         await update.message.reply_text(
