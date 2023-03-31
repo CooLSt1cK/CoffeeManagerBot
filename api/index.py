@@ -11,7 +11,9 @@ global bot_thread
 
 @app.route('/start')
 def start():
-    global bot_thread
-    bot_thread = Thread(target=main)
-    bot_thread.start()
-    return bot_thread.is_alive()
+    try:
+        global bot_thread
+        bot_thread = Thread(target=main)
+        bot_thread.start()
+    except Exception as e:
+        return e.with_traceback()
