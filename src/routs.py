@@ -69,7 +69,7 @@ async def shift_started(update: Update, context: CallbackContext):
         total_caps_l = list(filter(lambda cap: cap['name'] == 'L', context.user_data['shift']['caps']))[0][
                            'count'] - sum(
             map(lambda order: 1,
-                filter(lambda order: 'size' in order and order['size']['name'] == 'l', order_list_total)))
+                filter(lambda order: 'size' in order and order['size']['name'] == 'L', order_list_total)))
         total_caps_xl = list(filter(lambda cap: cap['name'] == 'XL', context.user_data['shift']['caps']))[0][
                             'count'] - sum(
             map(lambda order: 1,

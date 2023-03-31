@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import os
@@ -9,8 +10,7 @@ from src.routs_for_ordering import *
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO,
-    filename='logs.txt'
+    level=logging.INFO
 )
 
 
@@ -18,6 +18,7 @@ def main():
     token = os.environ.get('BOT_TOKEN')
     with open('resources/bar.json') as f:
         bar = json.load(f)
+    asyncio.set_event_loop(asyncio.new_event_loop())
     application = ApplicationBuilder().token(token).build()
 
     application.add_handler(CommandHandler('start', start))
