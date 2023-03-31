@@ -14,4 +14,4 @@ def start():
     global bot_thread
     bot_thread = Thread(target=main)
     bot_thread.start()
-    return 'Bot is started'
+    return bot_thread.is_alive()
