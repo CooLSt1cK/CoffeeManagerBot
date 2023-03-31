@@ -6,7 +6,8 @@ from telegram.ext import CommandHandler, MessageHandler, filters, ApplicationBui
 from src.routs import *
 from src.routs_for_ordering import *
 
-if __name__ == '__main__':
+
+def main():
     token = os.environ.get('BOT_TOKEN')
     with open('resources/bar.json') as f:
         bar = json.load(f)
@@ -20,3 +21,7 @@ if __name__ == '__main__':
 
     application.bot_data['bar'] = bar
     application.run_polling()
+
+
+if __name__ == '__main__':
+    main()
