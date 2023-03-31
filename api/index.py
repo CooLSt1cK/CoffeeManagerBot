@@ -9,14 +9,14 @@ global bot_thread
 
 
 @app.route('/start')
-def home():
-    bot_thread = Thread(target=main, deamon=True)
+def start():
+    bot_thread = Thread(target=main, daemon=True)
     bot_thread.start()
     return 'Bot is started'
 
 
 @app.route('/stop')
-def about():
+def stop():
     if bot_thread:
         bot_thread.join()
         return 'Bot is stopped'
