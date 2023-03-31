@@ -17,7 +17,7 @@ def start():
         bot_thread.start()
         return str(bot_thread.is_alive())
     except Exception as e:
-        return str(e.__traceback__)
+        return str(e)
 
 
 @app.route('/status')
