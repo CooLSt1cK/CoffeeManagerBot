@@ -28,5 +28,8 @@ def status():
 
 @app.route('/read_logs')
 def read_logs():
-    with open('logs.txt', 'r') as f:
-        return str(f.read()).replace('\n', '<br>')
+    try:
+        with open('logs.txt', 'r') as f:
+            return str(f.read()).replace('\n', '<br>')
+    except Exception as e:
+        return str(e.__traceback__)
