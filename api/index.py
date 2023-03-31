@@ -12,10 +12,12 @@ global bot_thread
 @app.route('/start')
 def start():
     try:
-        global bot_thread
-        bot_thread = Thread(target=main)
-        bot_thread.start()
-        return str(bot_thread.is_alive())
+        #global bot_thread
+        #bot_thread = Thread(target=main)
+        #bot_thread.start()
+        #return str(bot_thread.is_alive())
+        main()
+        return 'Fine'
     except Exception as e:
         return str(e)
 
