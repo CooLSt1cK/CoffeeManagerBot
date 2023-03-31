@@ -15,5 +15,6 @@ def start():
         global bot_thread
         bot_thread = Thread(target=main)
         bot_thread.start()
+        return str(bot_thread.is_alive())
     except Exception as e:
-        return e.with_traceback()
+        return str(e.__traceback__)
