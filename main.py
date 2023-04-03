@@ -18,7 +18,7 @@ logging.basicConfig(
 
 def main():
     token = os.environ.get('BOT_TOKEN')
-    with open('resources/bar.json') as f:
+    with open('resources/menu.json') as f:
         bar = json.load(f)
     asyncio.set_event_loop(asyncio.new_event_loop())
     application = ApplicationBuilder().token(token).build()

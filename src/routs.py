@@ -33,7 +33,7 @@ async def shift_started(update: Update, context: CallbackContext):
         logic_keyboard = [InlineKeyboardButton(emojize(':pencil:'), callback_data='edit'),
                           InlineKeyboardButton(emojize(':cross_mark:'), callback_data='cancel')]
         keyboard = [InlineKeyboardButton(item['name'], callback_data=i) for i, item in
-                    enumerate(context.bot_data['bar']['coffee'])]
+                    enumerate(context.bot_data['menu']['bar'])]
         await update.message.reply_text('Створити замовлення',
                                         reply_markup=InlineKeyboardMarkup(
                                             [*split_in_two_columns(keyboard), logic_keyboard]))

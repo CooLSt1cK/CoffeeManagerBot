@@ -18,19 +18,19 @@ def create_approve_keyboard():
 
 def create_coffee_keyboard(context):
     coffee_keyboard = [InlineKeyboardButton(item['name'], callback_data=i) for i, item in
-                       enumerate(context.bot_data['bar']['coffee'])]
+                       enumerate(context.bot_data['menu']['bar'])]
     return [*split_in_two_columns(coffee_keyboard), create_logic_keyboard(), create_approve_keyboard()]
 
 
 def create_additives_keyboard(context):
     additives_keyboard = [InlineKeyboardButton(item['name'], callback_data=i) for i, item in
-                          enumerate(context.bot_data['bar']['additives'])]
+                          enumerate(context.bot_data['menu']['additives'])]
     return [*split_in_two_columns(additives_keyboard), create_logic_keyboard(), create_approve_keyboard()]
 
 
 def create_sweets_keyboard(context):
     sweets_keyboard = [InlineKeyboardButton(item['name'], callback_data=i) for i, item in
-                       enumerate(context.bot_data['bar']['sweets'])]
+                       enumerate(context.bot_data['menu']['sweets'])]
     return [*split_in_two_columns(sweets_keyboard), create_logic_keyboard(), create_approve_keyboard()]
 
 
@@ -147,9 +147,9 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
     elif context.user_data[f'order_status_{message_id}'] == 'coffee':
-        if len(context.bot_data['bar']['coffee'][callback_data]['sizes']) == 1:
-            selected_coffee = {'name': context.bot_data['bar']['coffee'][callback_data]['name'],
-                               'size': context.bot_data['bar']['coffee'][callback_data]['sizes'][0]}
+        if len(context.bot_data['menu']['bar'][callback_data]['sizes']) == 1:
+            selected_coffee = {'name': context.bot_data['menu']['bar'][callback_data]['name'],
+                               'size': context.bot_data['menu']['bar'][callback_data]['sizes'][0]}
             context.user_data[f'current_order_{message_id}'].append(selected_coffee)
             context.user_data[f'order_status_{message_id}'] = 'additives'
             await query.edit_message_text(
@@ -157,9 +157,9 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 reply_markup=InlineKeyboardMarkup(additives_keyboard))
         else:
             context.user_data[f'order_status_{message_id}'] = 'size'
-            coffee_size_keyboard = [InlineKeyboardButton(size['name'], callback_data=f'{callback_data}/{i}') for i, size
+            coffee_size_keyboard = [InlineKeyboardButton(size['title'], callback_data=f'{callback_data}/{i}') for i, size
                                     in
-                                    enumerate(context.bot_data['bar']['coffee'][callback_data]['sizes'])]
+                                    enumerate(context.bot_data['menu']['bar'][callback_data]['sizes'])]
             await query.edit_message_text(
                 text=f'Будьласка оберіть розмір кави {context.bot_data["bar"]["coffee"][callback_data]["name"]}',
                 reply_markup=InlineKeyboardMarkup([coffee_size_keyboard]))
@@ -167,8 +167,8 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     elif context.user_data[f'order_status_{message_id}'] == 'size':
         coffee_name, coffee_size = list(map(int, callback_data.split('/', 2)))
-        selected_coffee = {'name': context.bot_data['bar']['coffee'][coffee_name]['name'],
-                           'size': context.bot_data['bar']['coffee'][coffee_name]['sizes'][coffee_size]}
+        selected_coffee = {'name': context.bot_data['menu']['bar'][coffee_name]['name'],
+                           'size': context.bot_data['menu']['bar'][coffee_name]['sizes'][coffee_size]}
         context.user_data[f'current_order_{message_id}'].append(selected_coffee)
         context.user_data[f'order_status_{message_id}'] = 'additives'
         await query.edit_message_text(
@@ -177,7 +177,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
     elif context.user_data[f'order_status_{message_id}'] == 'additives':
-        selected_additive = context.bot_data['bar']['additives'][callback_data]
+        selected_additive = context.bot_data['menu']['additives'][callback_data]
         context.user_data[f'current_order_{message_id}'].append(selected_additive)
         context.user_data[f'order_status_{message_id}'] = 'additives'
         await query.edit_message_text(
@@ -186,7 +186,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
     elif context.user_data[f'order_status_{message_id}'] == 'sweets':
-        selected_sweet = context.bot_data['bar']['sweets'][callback_data]
+        selected_sweet = context.bot_data['menu']['sweets'][callback_data]
         context.user_data[f'current_order_{message_id}'].append(selected_sweet)
         context.user_data[f'order_status_{message_id}'] = 'sweets'
         await query.edit_message_text(
