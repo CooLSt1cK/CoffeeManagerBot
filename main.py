@@ -29,7 +29,7 @@ def main():
     application.add_handler(MessageHandler(filters.TEXT, unknown_text))
     application.add_handler(CallbackQueryHandler(button))
 
-    application.bot_data['bar'] = bar
+    application.bot_data['menu'] = bar
     application.run_polling()
 
 
