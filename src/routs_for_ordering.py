@@ -1,3 +1,4 @@
+import json
 import re
 
 from emoji import emojize
@@ -57,9 +58,9 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif callback_data == 'save':
         context.user_data[f'order_status_{message_id}'] = 'coffee'
         await query.edit_message_text(
-            text=f'+---------------\n|Ваше замовлення\n+---------------\n|' + '\n|'.join(
+            text=f'+--------------------\n|Ваше замовлення\n+--------------------\n|' + '\n|'.join(
                 list(map(item_to_str, context.user_data[f"current_order_{message_id}"]))) +
-                 f'\n+---------------\n|Вартість: {count_cost(context.user_data[f"current_order_{message_id}"])}\n+---------------',
+                 f'\n+--------------------\n|Вартість: {count_cost(context.user_data[f"current_order_{message_id}"])}\n+--------------------',
             reply_markup=InlineKeyboardMarkup(coffee_keyboard))
 
         return
@@ -90,17 +91,17 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         return
     elif callback_data == 'close':
-        await query.edit_message_text(text='+---------------\n|' + '\n|'.join(
-            list(map(order_to_str, context.user_data['shift']['orders']))) + '\n+---------------')
+        await query.edit_message_text(text='+--------------------\n|' + '\n|'.join(
+            list(map(order_to_str, context.user_data['shift']['orders']))) + '\n+--------------------')
 
         return
     elif callback_data == 'order_approve':
         question_keyboard = [InlineKeyboardButton(emojize(':check_mark_button:'), callback_data='confirm_order'),
                              InlineKeyboardButton(emojize(':cross_mark:'), callback_data='save')]
         await query.edit_message_text(
-            text=f'+---------------\n|Ваше замовлення\n+---------------\n|' + '\n|'.join(
+            text=f'+--------------------\n|Ваше замовлення\n+--------------------\n|' + '\n|'.join(
                 list(map(item_to_str, context.user_data[f"current_order_{message_id}"]))) +
-                 f'\n+---------------\n|Вартість: {count_cost(context.user_data[f"current_order_{message_id}"])}\n+---------------',
+                 f'\n+--------------------\n|Вартість: {count_cost(context.user_data[f"current_order_{message_id}"])}\n+--------------------',
             reply_markup=InlineKeyboardMarkup([question_keyboard]))
 
         return
@@ -118,15 +119,20 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     elif callback_data == 'credit_card':
         total_cost = count_cost(context.user_data[f"current_order_{message_id}"])
-        await query.edit_message_text(f'+---------------\n|Ваше замовлення\n+---------------\n|' + '\n|'.join(
+        await query.edit_message_text(f'+--------------------\n|Ваше замовлення\n+--------------------\n|' + '\n|'.join(
             list(map(item_to_str, context.user_data[f"current_order_{message_id}"]))) +
-                                      f'\n+---------------\n|Вартість: {total_cost}\n+---------------')
+                                      f'\n+--------------------\n|Вартість: {total_cost}\n+--------------------')
         context.user_data[f'shift']['orders'].append({'order_type': 'credit_card',
                                                       'order_cost': total_cost,
                                                       'order_list': context.user_data[
                                                           f'current_order_{message_id}'].copy()})
         del context.user_data[f'current_order_{message_id}']
         del context.user_data[f'order_status_{message_id}']
+        with open('resources/current_state.json', 'r') as f:
+            current_state = json.load(f)
+        current_state['users'][str(update.effective_user.id)] = context.user_data
+        with open('resources/current_state.json', 'w') as f:
+            f.write(json.dumps(current_state))
 
         return
     elif callback_data == 'cancel':
@@ -140,9 +146,9 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             context.user_data[f'order_status_{message_id}'] = 'coffee'
             keyboard_to_reply = coffee_keyboard
         await query.edit_message_text(
-            text=f'+---------------\n|Ваше замовлення\n+---------------\n|' + '\n|'.join(
+            text=f'+--------------------\n|Ваше замовлення\n+--------------------\n|' + '\n|'.join(
                 list(map(item_to_str, context.user_data[f"current_order_{message_id}"]))) +
-                 f'\n+---------------\n|Вартість: {count_cost(context.user_data[f"current_order_{message_id}"])}\n+---------------',
+                 f'\n+--------------------\n|Вартість: {count_cost(context.user_data[f"current_order_{message_id}"])}\n+--------------------',
             reply_markup=InlineKeyboardMarkup(keyboard_to_reply))
 
         return
@@ -161,7 +167,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                     in
                                     enumerate(context.bot_data['menu']['bar'][callback_data]['sizes'])]
             await query.edit_message_text(
-                text=f'Будьласка оберіть розмір кави {context.bot_data["bar"]["coffee"][callback_data]["name"]}',
+                text=f'Будьласка оберіть розмір кави {context.bot_data["menu"]["bar"][callback_data]["name"]}',
                 reply_markup=InlineKeyboardMarkup([coffee_size_keyboard]))
 
         return
